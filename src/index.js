@@ -10,18 +10,6 @@ import projectData from './projectData'
 
 function DetailPage({ projectIndex, onBack, leaving }) {
   const proj = projectData[projectIndex]
-  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 })
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({
-        x: e.clientX / window.innerWidth,
-        y: e.clientY / window.innerHeight,
-      })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
 
   if (!proj) return null
 
