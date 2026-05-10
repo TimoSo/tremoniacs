@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import React, { Suspense, useState, useEffect } from 'react'
+import React, { Suspense, useState } from 'react'
 import './styles.css'
 import App from './App'
 import projectData from './projectData'
