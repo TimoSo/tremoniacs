@@ -84,9 +84,17 @@ function AboutPage({ onBack }) {
           interaktiver Kunst, Game Design, VR/AR und digitaler Szenografie.
         </p>
         <p className="static-text">
-          Unsere Projekte verbinden technische Exploration mit narrativer Tiefe — 
+          Unsere Projekte verbinden technische Exploration mit narrativer Tiefe —
           von Projection Mapping über Game-Installationen bis hin zu immersiven VR-Erfahrungen.
         </p>
+
+        <h3 className="static-subtitle">Impressum</h3>
+        <address className="impressum">
+          Timo Sodenkamp<br />
+          Mallinckrodtstr. 52<br />
+          DE 44145 Dortmund<br />
+          <a href="mailto:team@tremoniacs.xyz">team@tremoniacs.xyz</a>
+        </address>
       </div>
     </div>
   )
