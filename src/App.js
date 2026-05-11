@@ -73,7 +73,7 @@ export default function App({ page, onObjectHover, onReadMore, onBack }) {
     const baseDistance = Math.hypot(0, 2 - 0.5, 14) // initial setLookAt → ~14.08
     const minD = baseDistance * 0.85
     const maxD = baseDistance * 1.15
-    const step = baseDistance * 0.03 // ~3% pro Tick, gedämpft via dollyTo
+    const step = baseDistance * 0.08 // ~8% pro Tick, gedämpft via dollyTo
 
     const onWheel = (e) => {
       if (isZoomedIn) return
