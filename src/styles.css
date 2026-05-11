@@ -153,6 +153,18 @@ canvas {
   background: var(--clr-accent);
 }
 
+.nav-external-arrow {
+  display: inline-block;
+  margin-left: 0.2em;
+  font-size: 0.9em;
+  color: var(--clr-accent);
+  transition: transform 0.3s ease;
+}
+
+.header-nav a:hover .nav-external-arrow {
+  transform: translate(2px, -2px);
+}
+
 /* Burger Menu */
 .burger {
   display: none;

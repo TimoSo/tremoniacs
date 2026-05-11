@@ -127,7 +127,7 @@ function Header({ setPage, currentPage }) {
           Über uns
         </span>
         <a href="https://www.instagram.com/tremoniacs.fbx/" target="_blank" rel="noopener noreferrer">
-          Instagram
+          Instagram <span className="nav-external-arrow">↗</span>
         </a>
         <a href="https://www.youtube.com/@andieundroy" target="_blank" rel="noopener noreferrer">
           YouTube
