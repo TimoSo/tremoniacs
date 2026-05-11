@@ -65,6 +65,30 @@ export default function App({ page, onObjectHover, onReadMore, onBack }) {
     return () => window.removeEventListener('contextmenu', handleContextMenu)
   }, [page, handleReset, onBack])
 
+  // Sanftes Scroll-Zoom auf der Home-Ansicht, ±15% der Basis-Distanz.
+  // Wir nutzen einen eigenen Wheel-Handler statt CameraControls' dollySpeed,
+  // damit wir Min/Max sauber clampen können ohne fitToBox zu blocken.
+  useEffect(() => {
+    if (page !== 'home') return
+    const baseDistance = Math.hypot(0, 2 - 0.5, 14) // initial setLookAt → ~14.08
+    const minD = baseDistance * 0.85
+    const maxD = baseDistance * 1.15
+    const step = baseDistance * 0.03 // ~3% pro Tick, gedämpft via dollyTo
+
+    const onWheel = (e) => {
+      if (isZoomedIn) return
+      const c = controlsRef.current
+      if (!c) return
+      e.preventDefault()
+      const direction = e.deltaY > 0 ? 1 : -1
+      const target = Math.max(minD, Math.min(maxD, c.distance + direction * step))
+      c.dollyTo(target, true)
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    return () => window.removeEventListener('wheel', onWheel)
+  }, [page, isZoomedIn])
+
   const handleReadMoreClick = () => {
     if (activeAnnotation !== null && onReadMore) {
       setExitingOverlayData(infoOverlay)
