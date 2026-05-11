@@ -392,7 +392,8 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
           </mesh>
         ))}
 
-        {/* Annotations */}
+        {/* Annotations — wenn eine aktiv ist, fade alle anderen aus,
+            damit sie sich nicht mit der Info-Box überlappen */}
         {showAnnotations &&
           page === 'home' &&
           projectData.map((proj, i) => (
@@ -401,7 +402,10 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
               position={proj.position}
               name={proj.name}
               isActive={activeAnnotation === i}
-              isVisible={annotationVisibility[i]}
+              isVisible={
+                annotationVisibility[i] &&
+                (activeAnnotation === null || activeAnnotation === i)
+              }
               onClick={() => handleAnnotationClick(i)}
             />
           ))}
