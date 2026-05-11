@@ -130,7 +130,7 @@ function Header({ setPage, currentPage }) {
           Instagram <span className="nav-external-arrow">↗</span>
         </a>
         <a href="https://www.youtube.com/@andieundroy" target="_blank" rel="noopener noreferrer">
-          YouTube
+          YouTube <span className="nav-external-arrow">↗</span>
         </a>
       </nav>
       <div className={`burger ${menuOpen ? 'burger-open' : ''}`} onClick={() => setMenuOpen(!menuOpen)}>
