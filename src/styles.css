@@ -605,6 +605,37 @@ canvas {
   margin: 0 0 1.2em;
 }
 
+.static-subtitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1em;
+  color: var(--clr-text);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 3em 0 1em;
+  padding-top: 2em;
+  border-top: 1px solid rgba(214, 251, 29, 0.2);
+}
+
+.impressum {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.95em;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--clr-text-muted);
+}
+
+.impressum a {
+  color: var(--clr-accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.impressum a:hover {
+  opacity: 0.7;
+}
+
 /* Member Cards */
 .about-members {
   display: flex;
