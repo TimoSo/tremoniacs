@@ -49,7 +49,9 @@ function DetailPage({ projectIndex, onBack, leaving }) {
           </div>
         )}
 
-        <p className="detail-text detail-enter-text">{proj.description}</p>
+        {proj.description.split('\n\n').map((para, i) => (
+          <p key={i} className="detail-text detail-enter-text">{para}</p>
+        ))}
       </div>
     </div>
   )
