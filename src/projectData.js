@@ -62,11 +62,11 @@ Am Ende bleibt die Frage: Would you like to book a trip to the multiversurlaub?`
   },
   {
     id: 'mapping-visuals',
-    name: 'Mapping Visuals',
+    name: 'Mapping Live Performance',
     position: [3.0, -0.8, -0.5],
-    shortInfo: 'Live Visuals auf architektonische Oberflächen.',
+    shortInfo: 'Interaktive Live Performance mit Motion Capture Suit beim Fassadenmapping am Dortmunder U.',
     description:
-      'Projection Mapping und Live Visuals auf architektonische Oberflächen. Echtzeit-generierte Grafiken reagieren auf Musik und verwandeln Gebäude in lebendige Leinwände.',
+      'Interaktive Live Performance mit Motion Capture Suit beim Fassadenmapping am Dortmunder U.',
     youtubeId: 'KEPhs6mOuLk',
     thumbnail: null,
     year: '2024',
