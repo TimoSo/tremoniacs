@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Html, CameraControls, Environment, Float, MeshTransmissionMaterial } from '@react-three/drei'
+import { Html, CameraControls, Environment, Float, MeshTransmissionMaterial, useGLTF } from '@react-three/drei'
 import { easing } from 'maath'
 import projectData from './projectData'
 
@@ -100,11 +100,11 @@ export default function App({ page, onObjectHover, onReadMore, onBack }) {
           setInfoOverlay={setInfoOverlay}
           onObjectHover={onObjectHover}
           onBack={onBack}
-          position={[0, -2, 3]}
+          position={[0, 0, 0]}
         />
 
         <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, -20]} intensity={3} color="#ff6b35" />
+        <pointLight position={[10, 10, -20]} intensity={3} color="#D6FB1D" />
         <pointLight position={[-10, 8, 10]} intensity={2} color="#4ecdc4" />
         <pointLight position={[0, -5, 5]} intensity={1} color="#ffe66d" />
         <Environment preset="night" />
@@ -209,6 +209,14 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
   const lookAtRef = useRef(new THREE.Vector3(0, 0.5, 0))
   const detailTransitionStarted = useRef(false)
 
+  // GLB-Modell laden — wir greifen via nodes auf einzelne Meshes zu, damit
+  // der Ring den drei-eigenen MeshTransmissionMaterial-Shader bekommen kann
+  // (chromaticAberration / distortion / temporalDistortion sind drei-only)
+  const { nodes } = useGLTF('/tremoniacs_Logo_e01.glb')
+
+  const ringNode = nodes.Curve001_1
+  const tubesNode = nodes.Curve001_2
+
   useEffect(() => {
     const timer = setTimeout(() => setShowAnnotations(true), 800)
     return () => clearTimeout(timer)
@@ -290,30 +298,60 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
     <group ref={group} {...props} dispose={null}>
       <group ref={spinRef}>
         <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.5}>
-          <mesh
+          <group
             ref={objectRef}
+            scale={3}
             onPointerEnter={() => onObjectHover && onObjectHover(true)}
             onPointerLeave={() => onObjectHover && onObjectHover(false)}
             onClick={() => {
               if (page === 'detail' && onBack) onBack()
             }}>
-            <torusKnotGeometry args={[3, 0.8, 256, 32, 2, 3]} />
-            <MeshTransmissionMaterial
-              backside
-              samples={4}
-              thickness={0.5}
-              chromaticAberration={0.3}
-              anisotropy={0.3}
-              distortion={0.5}
-              distortionScale={0.5}
-              temporalDistortion={0.2}
-              iridescence={1}
-              iridescenceIOR={1}
-              iridescenceThicknessRange={[0, 1400]}
-              color="#1a1a2e"
-              background={new THREE.Color('#0a0a0a')}
-            />
-          </mesh>
+            {/* Ring — iridescenter Glas-Shader (vorher beim Torus Knot eingesetzt) */}
+            {ringNode && (
+              <mesh
+                geometry={ringNode.geometry}
+                position={ringNode.position}
+                rotation={ringNode.rotation}
+                scale={ringNode.scale}
+                castShadow
+                receiveShadow>
+                <MeshTransmissionMaterial
+                  backside
+                  samples={4}
+                  thickness={0.5}
+                  chromaticAberration={0.3}
+                  anisotropy={0.3}
+                  distortion={0.5}
+                  distortionScale={0.5}
+                  temporalDistortion={0.2}
+                  iridescence={1}
+                  iridescenceIOR={1}
+                  iridescenceThicknessRange={[0, 1400]}
+                  color="#1a1a2e"
+                  background={new THREE.Color('#0a0a0a')}
+                />
+              </mesh>
+            )}
+
+            {/* Zick-Zack Tubes — neon-grün mit Emission */}
+            {tubesNode && (
+              <mesh
+                geometry={tubesNode.geometry}
+                position={tubesNode.position}
+                rotation={tubesNode.rotation}
+                scale={tubesNode.scale}
+                castShadow
+                receiveShadow>
+                <meshStandardMaterial
+                  color="#D6FB1D"
+                  emissive="#D6FB1D"
+                  emissiveIntensity={0.8}
+                  metalness={0.4}
+                  roughness={0.3}
+                />
+              </mesh>
+            )}
+          </group>
         </Float>
 
         {/* Unsichtbare Marker für Kamera-Zoom */}
@@ -363,6 +401,8 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
 /* Annotation-Komponente                     */
 /* ========================================= */
 
+useGLTF.preload('/tremoniacs_Logo_e01.glb')
+
 function Annotation({ name, isActive, isVisible, onClick, ...props }) {
   const handleClick = (e) => {
     e.stopPropagation()
@@ -372,9 +412,8 @@ function Annotation({ name, isActive, isVisible, onClick, ...props }) {
   return (
     <Html
       {...props}
-      transform
-      sprite
       center
+      distanceFactor={12}
       style={{
         transition: 'opacity 0.3s',
         opacity: isVisible ? 1 : 0,
