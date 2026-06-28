@@ -67,6 +67,9 @@ function AboutPage({ onBack }) {
       <div className="back-button" onClick={onBack}>← ZURÜCK</div>
       <div className="static-content">
         <h2 className="static-title">Über uns</h2>
+        <figure className="about-image">
+          <img src="/Tremoniacs_Bild_01.jpg" alt="Laurin Bürmann und Timo Sodenkamp" loading="lazy" />
+        </figure>
         <div className="about-members">
           <div className="member-card">
             <h3>Laurin Bürmann</h3>
