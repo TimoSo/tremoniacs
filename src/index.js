@@ -144,6 +144,87 @@ function Header({ setPage, currentPage }) {
 }
 
 /* ========================================= */
+/* 2D Projekt-Galerie                        */
+/* ========================================= */
+
+// Vorschaubild ermitteln: eigenes Thumbnail bevorzugt, sonst YouTube-Standbild
+function youtubePreview(id, quality) {
+  return `https://img.youtube.com/vi/${id}/${quality}.jpg`
+}
+
+function GalleryItem({ proj, onSelect }) {
+  const initial = proj.thumbnail
+    ? proj.thumbnail
+    : proj.youtubeId
+    ? youtubePreview(proj.youtubeId, 'maxresdefault')
+    : null
+
+  const [src, setSrc] = useState(initial)
+  const [failed, setFailed] = useState(initial === null)
+
+  const handleError = () => {
+    // maxresdefault existiert nicht für jedes Video → auf hqdefault zurückfallen
+    if (proj.youtubeId && src && src.includes('maxresdefault')) {
+      setSrc(youtubePreview(proj.youtubeId, 'hqdefault'))
+    } else {
+      setFailed(true)
+    }
+  }
+
+  return (
+    <figure className="gallery-item" onClick={onSelect}>
+      <div className="gallery-frame">
+        {!failed && src ? (
+          <img src={src} alt={proj.name} loading="lazy" onError={handleError} />
+        ) : (
+          <div className="gallery-placeholder">
+            <span>{proj.name}</span>
+          </div>
+        )}
+      </div>
+      <figcaption className="gallery-caption">
+        <span className="gallery-name">{proj.name}</span>
+        <span className="gallery-year">{proj.year}</span>
+      </figcaption>
+    </figure>
+  )
+}
+
+function ProjectGallery({ onSelect }) {
+  return (
+    <div className="gallery-page">
+      <div className="gallery-grid">
+        {projectData.map((proj, i) => (
+          <GalleryItem key={proj.id} proj={proj} onSelect={() => onSelect(i)} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/* ========================================= */
+/* Ansicht-Switch (3D / 2D)                  */
+/* ========================================= */
+
+function ViewSwitch({ view, setView }) {
+  return (
+    <div className="view-switch" role="group" aria-label="Ansicht wechseln">
+      <div className={`view-switch-thumb ${view === '2d' ? 'thumb-2d' : 'thumb-3d'}`} />
+      <button
+        className={`view-switch-btn ${view === '3d' ? 'active' : ''}`}
+        onClick={() => setView('3d')}>
+        3D
+      </button>
+      <button
+        className={`view-switch-btn ${view === '2d' ? 'active' : ''}`}
+        onClick={() => setView('2d')}>
+        2D
+      </button>
+    </div>
+  )
+}
+
+/* ========================================= */
 /* Main App                                  */
 /* ========================================= */
 
@@ -153,6 +234,7 @@ function MainApp() {
   const [objectHovered, setObjectHovered] = useState(false)
   const [detailIndex, setDetailIndex] = useState(null)
   const [detailExiting, setDetailExiting] = useState(false)
+  const [projectsView, setProjectsView] = useState('3d') // '3d' = Canvas, '2d' = Bildergalerie
 
   const handleReadMore = (projectIndex) => {
     setTitleVisible(false)
@@ -214,6 +296,14 @@ function MainApp() {
           NIACS
         </h1>
       </div>
+
+      {/* 3D/2D-Switch — nur in der Projekte-Ansicht */}
+      {page === 'home' && <ViewSwitch view={projectsView} setView={setProjectsView} />}
+
+      {/* 2D-Bildergalerie — überlagert das Canvas in der Projekte-Ansicht */}
+      {page === 'home' && projectsView === '2d' && (
+        <ProjectGallery onSelect={handleReadMore} />
+      )}
 
       {/* Seiten */}
       {page === 'about' && <AboutPage onBack={handleAboutBack} />}

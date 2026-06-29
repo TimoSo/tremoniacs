@@ -742,3 +742,173 @@ canvas {
     font-size: 6vw;
   }
 }
+
+/* ===================== */
+/* ANSICHT-SWITCH 3D/2D  */
+/* ===================== */
+
+.view-switch {
+  position: fixed;
+  left: 1.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 2.8em;
+  border-radius: 1.4em;
+  background: rgba(10, 10, 10, 0.6);
+  border: 1px solid rgba(214, 251, 29, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+/* gleitendes gelbes Highlight */
+.view-switch-thumb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 50%;
+  background: var(--clr-accent);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+}
+
+.view-switch-thumb.thumb-3d {
+  transform: translateY(0);
+}
+
+.view-switch-thumb.thumb-2d {
+  transform: translateY(100%);
+}
+
+.view-switch-btn {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75em;
+  letter-spacing: 0.1em;
+  padding: 1em 0;
+  color: var(--clr-text-muted);
+  transition: color 0.3s ease;
+}
+
+.view-switch-btn.active {
+  color: var(--clr-bg);
+}
+
+/* ===================== */
+/* 2D PROJEKT-GALERIE    */
+/* ===================== */
+
+.gallery-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  overflow-y: auto;
+  background: radial-gradient(circle at 30% 70%, #111118 0%, #0a0a0a 100%);
+  animation: fade-in 0.5s ease forwards;
+}
+
+.gallery-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  /* großzügiges linkes Padding, damit der Switch nicht überlappt */
+  padding: 7em 3em 5em 6em;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.8em;
+}
+
+.gallery-item {
+  margin: 0;
+  cursor: pointer;
+}
+
+.gallery-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(214, 251, 29, 0.2);
+  background: rgba(214, 251, 29, 0.04);
+}
+
+.gallery-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* sanfter Zoom-In über 3/4 Sekunde, Rahmen bleibt fix */
+  transition: transform 0.75s ease;
+}
+
+.gallery-item:hover .gallery-frame img {
+  transform: scale(1.08);
+}
+
+.gallery-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-text-muted);
+}
+
+.gallery-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5em;
+  margin-top: 0.6em;
+  font-family: var(--font-display);
+}
+
+.gallery-name {
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clr-text);
+  transition: color 0.3s ease;
+}
+
+.gallery-item:hover .gallery-name {
+  color: var(--clr-accent);
+}
+
+.gallery-year {
+  font-size: 0.7em;
+  color: var(--clr-text-muted);
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  .view-switch {
+    left: 0.6em;
+    width: 2.5em;
+  }
+  .gallery-grid {
+    padding: 6em 1em 4em 3.8em;
+    gap: 1em;
+  }
+}
