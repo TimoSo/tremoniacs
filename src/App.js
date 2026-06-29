@@ -127,6 +127,7 @@ export default function App({ page, onObjectHover, onReadMore, onBack, galleryAc
           onObjectHover={onObjectHover}
           onBack={onBack}
           activeTag={activeTag}
+          galleryActive={galleryActive}
           position={[0, 0, 0]}
         />
 
@@ -224,7 +225,7 @@ function FloatingParticles({ count }) {
 /* Könnt ihr durch ein eigenes .glb ersetzen */
 /* ========================================= */
 
-function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setActiveAnnotation, setInfoOverlay, onObjectHover, onBack, activeTag, ...props }) {
+function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setActiveAnnotation, setInfoOverlay, onObjectHover, onBack, activeTag, galleryActive, ...props }) {
   const group = useRef()
   const light = useRef()
   const spinRef = useRef()
@@ -400,6 +401,7 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
             Tag-Filter blendet nicht passende Projekte aus. */}
         {showAnnotations &&
           page === 'home' &&
+          !galleryActive &&
           projectData.map((proj, i) => {
             const matchesTag = !activeTag || (proj.tags && proj.tags.includes(activeTag))
             return (

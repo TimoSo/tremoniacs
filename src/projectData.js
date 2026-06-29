@@ -4,30 +4,6 @@
 
 const projectData = [
   {
-    id: 'umap',
-    tags: ['installation'],
-    name: 'UMAP',
-    position: [2.2, 0.8, 1.5],
-    shortInfo: 'Interaktive Datenvisualisierung als immersive Installation.',
-    description:
-      'UMAP ist eine interaktive Installation, die Datenvisualisierung in einen immersiven Erfahrungsraum übersetzt. Das Projekt untersucht, wie abstrakte Datenstrukturen räumlich erlebbar gemacht werden können.',
-    youtubeId: null,
-    thumbnail: null,
-    year: '2025',
-  },
-  {
-    id: 'infa',
-    tags: ['installation'],
-    name: 'INFA',
-    position: [-2.5, 1.2, 0.8],
-    shortInfo: 'Digitale Kunst trifft Messekonzept.',
-    description:
-      'INFA verbindet digitale Kunstproduktion mit dem Format einer Messe-Installation. Besucher:innen erleben eine Verschmelzung von physischem und digitalem Raum.',
-    youtubeId: null,
-    thumbnail: null,
-    year: '2025',
-  },
-  {
     id: 'hildemaus',
     tags: ['game', 'installation'],
     name: 'Hildemaus',
@@ -200,7 +176,7 @@ Mitwirkende: Laurin Bürmann`,
   {
     id: 'dortmund-dance-division',
     tags: ['mapping'],
-    name: 'Dance Division',
+    name: 'Dortmund Dance Division',
     position: [0.2, -1.0, 2.5],
     shortInfo: 'Live Visuals für ein Techno-Event im Langen August, Dortmund.',
     description: `Für ein Techno-Event der Dortmund Dance Division im Langen August, einem autonomen Zentrum in der Dortmunder Nordstadt, haben Azziza El-Yabadri, Timo Sodenkamp, Laurin Bürmann, Flor de Fuego und Lennart Oberscheidt Live Visuals inszeniert, die sich zwischen Brutalismus, digitaler Ästhetik und organischen Strukturen bewegt.
@@ -213,7 +189,7 @@ Die Visuals wurden in Resolume arrangiert und auf zwei verschiedene Projektionsf
 
 Mitwirkende: Azziza El-Yabadri, Timo Sodenkamp, Laurin Bürmann, Flor de Fuego, Lennart Oberscheidt`,
     youtubeId: null,
-    thumbnail: null,
+    thumbnail: '/DDD_Greifarm0.jpg',
     year: '2023',
   },
   {
@@ -236,7 +212,7 @@ To be continued.
 
 Mitwirkende: Timo Sodenkamp, Laurin Bürmann`,
     youtubeId: null,
-    thumbnail: null,
+    thumbnail: '/REK_Zoom_In0.jpg',
     year: '2022',
   },
   {
