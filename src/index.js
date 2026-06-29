@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useState, useEffect, useRef } from 'react'
 import './styles.css'
 import App from './App'
 import projectData from './projectData'
@@ -291,6 +291,64 @@ function MainApp() {
 
   // 2D-Galerie aktiv: Projekte-Ansicht + 2D gewählt
   const galleryActive = page === 'home' && projectsView === '2d'
+
+  // Scroll-gesteuerter Wechsel zwischen 3D und 2D.
+  // Runterscrollen in 3D → ab Schwelle nach 2D; in 2D ganz oben weiter
+  // hochscrollen → zurück nach 3D. Die Galerie liegt animationslogisch
+  // "unter" der 3D-Szene, daher fühlt sich der Wechsel wie Weiterscrollen an.
+  const wheelAccum = useRef(0)
+  const wheelLock = useRef(false)
+
+  useEffect(() => {
+    if (page !== 'home') return
+
+    const THRESHOLD = 700 // ~2-3 Mausrad-Umdrehungen
+    const COOLDOWN = 1200 // ms Sperre nach einem Wechsel (gegen Trackpad-Schwung)
+
+    const lockFor = (ms) => {
+      wheelLock.current = true
+      wheelAccum.current = 0
+      setTimeout(() => {
+        wheelLock.current = false
+      }, ms)
+    }
+
+    const onWheel = (e) => {
+      if (wheelLock.current) {
+        wheelAccum.current = 0
+        return
+      }
+
+      if (projectsView === '3d') {
+        // nur Runterscrollen zählt
+        if (e.deltaY > 0) {
+          wheelAccum.current += e.deltaY
+          if (wheelAccum.current > THRESHOLD) {
+            setProjectsView('2d')
+            lockFor(COOLDOWN)
+          }
+        } else {
+          wheelAccum.current = 0
+        }
+      } else {
+        // 2D: nur am oberen Ende der Galerie und beim Hochscrollen zählen
+        const gallery = document.querySelector('.gallery-page')
+        const atTop = !gallery || gallery.scrollTop <= 0
+        if (e.deltaY < 0 && atTop) {
+          wheelAccum.current += e.deltaY // negativ
+          if (wheelAccum.current < -THRESHOLD) {
+            setProjectsView('3d')
+            lockFor(COOLDOWN)
+          }
+        } else {
+          wheelAccum.current = 0
+        }
+      }
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: true })
+    return () => window.removeEventListener('wheel', onWheel)
+  }, [page, projectsView])
 
   return (
     <>

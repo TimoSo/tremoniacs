@@ -65,32 +65,6 @@ export default function App({ page, onObjectHover, onReadMore, onBack, galleryAc
     return () => window.removeEventListener('contextmenu', handleContextMenu)
   }, [page, handleReset, onBack])
 
-  // Sanftes Scroll-Zoom auf der Home-Ansicht, ±15% der Basis-Distanz.
-  // Wir nutzen einen eigenen Wheel-Handler statt CameraControls' dollySpeed,
-  // damit wir Min/Max sauber clampen können ohne fitToBox zu blocken.
-  useEffect(() => {
-    // In der 2D-Galerie keinen Wheel-Zoom abfangen — sonst lässt sich die
-    // Galerie nicht scrollen.
-    if (page !== 'home' || galleryActive) return
-    const baseDistance = Math.hypot(0, 2 - 0.5, 14) // initial setLookAt → ~14.08
-    const minD = baseDistance * 0.85
-    const maxD = baseDistance * 1.15
-    const step = baseDistance * 0.08 // ~8% pro Tick, gedämpft via dollyTo
-
-    const onWheel = (e) => {
-      if (isZoomedIn) return
-      const c = controlsRef.current
-      if (!c) return
-      e.preventDefault()
-      const direction = e.deltaY > 0 ? 1 : -1
-      const target = Math.max(minD, Math.min(maxD, c.distance + direction * step))
-      c.dollyTo(target, true)
-    }
-
-    window.addEventListener('wheel', onWheel, { passive: false })
-    return () => window.removeEventListener('wheel', onWheel)
-  }, [page, isZoomedIn, galleryActive])
-
   const handleReadMoreClick = () => {
     if (activeAnnotation !== null && onReadMore) {
       setExitingOverlayData(infoOverlay)
@@ -139,7 +113,9 @@ export default function App({ page, onObjectHover, onReadMore, onBack, galleryAc
 
         <CameraControls
           ref={controlsRef}
-          enabled={page === 'home'}
+          // im 2D-Modus deaktivieren, sonst fängt camera-controls die
+          // Wheel-Events ab und blockiert das Scrollen der Galerie
+          enabled={page === 'home' && !galleryActive}
           minPolarAngle={0}
           maxPolarAngle={Math.PI / 2}
           minAzimuthAngle={-Math.PI / 2}
