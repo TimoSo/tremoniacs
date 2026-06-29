@@ -402,8 +402,8 @@ canvas {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1; /* hinter der 3D-Szene (0), vor der Background-Typo (-2) */
-  width: 50vw;
-  max-width: 880px;
+  width: 75vw;
+  max-width: 1320px;
   aspect-ratio: 16 / 9;
   pointer-events: none;
   overflow: hidden;
@@ -437,7 +437,7 @@ canvas {
 
 @media (max-width: 600px) {
   .annotation-preview {
-    width: 85vw;
+    width: 95vw;
   }
 }
 
