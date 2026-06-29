@@ -170,7 +170,7 @@ Das Ergebnis ist ein 15-sekündiger Trailer, der die rote Mütze als rotierendes
 
 Mitwirkende: Laurin Bürmann`,
     youtubeId: null,
-    thumbnail: null,
+    thumbnail: '/YES_AI_CAN_Vorschau.jpg',
     year: '2023',
   },
   {

@@ -809,6 +809,8 @@ canvas {
 /* TAG-FILTER            */
 /* ===================== */
 
+/* eine durchgehende Pille: rundum abgerundet, Segmente nur durch
+   Trennlinien getrennt */
 .tag-filter {
   position: fixed;
   top: 7.5em;
@@ -816,10 +818,13 @@ canvas {
   transform: translateX(-50%);
   z-index: 100;
   display: flex;
-  gap: 0.6em;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 90vw;
+  max-width: 94vw;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(10, 10, 10, 0.6);
+  border: 1px solid rgba(214, 251, 29, 0.3);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .tag-filter-btn {
@@ -830,14 +835,17 @@ canvas {
   font-size: 0.7em;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.7em 1.2em;
-  border-radius: 2px;
-  background: rgba(10, 10, 10, 0.6);
-  border: 1px solid rgba(214, 251, 29, 0.3);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  padding: 0.9em 1.5em;
+  border: none;
+  background: transparent;
   color: var(--clr-text-muted);
-  transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  white-space: nowrap;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+/* Trennlinien zwischen den Segmenten */
+.tag-filter-btn + .tag-filter-btn {
+  border-left: 1px solid rgba(214, 251, 29, 0.2);
 }
 
 .tag-filter-btn:hover {
@@ -846,7 +854,6 @@ canvas {
 
 .tag-filter-btn.active {
   background: var(--clr-accent);
-  border-color: var(--clr-accent);
   color: var(--clr-bg);
 }
 
@@ -978,5 +985,10 @@ canvas {
   .gallery-grid {
     padding: 10em 1em 4em 3.8em;
     gap: 1em;
+  }
+  .tag-filter-btn {
+    font-size: 0.6em;
+    padding: 0.9em 0.8em;
+    letter-spacing: 0.08em;
   }
 }
