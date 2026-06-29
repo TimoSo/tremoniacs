@@ -809,6 +809,21 @@ canvas {
 /* 2D PROJEKT-GALERIE    */
 /* ===================== */
 
+/* 3D-Layer (Canvas + Annotations) als verschiebbare Ebene.
+   transform: translateY(0) erzeugt einen festen Containing-Block, damit die
+   fixierten Annotation-Overlays sauber mit der Ebene wandern. */
+.scene-3d {
+  position: fixed;
+  inset: 0;
+  transform: translateY(0);
+  transition: transform 3s cubic-bezier(0.16, 1, 0.3, 1); /* fast in, ease out */
+}
+
+.scene-3d-hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
 .gallery-page {
   position: fixed;
   top: 0;
@@ -818,7 +833,15 @@ canvas {
   z-index: 30;
   overflow-y: auto;
   background: radial-gradient(circle at 30% 70%, #111118 0%, #0a0a0a 100%);
-  animation: fade-in 0.5s ease forwards;
+  /* startet unterhalb des Bildrands und fährt synchron zum 3D-Layer hoch */
+  transform: translateY(100%);
+  transition: transform 3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.gallery-active {
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .gallery-grid {

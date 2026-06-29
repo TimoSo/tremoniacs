@@ -190,9 +190,9 @@ function GalleryItem({ proj, onSelect }) {
   )
 }
 
-function ProjectGallery({ onSelect }) {
+function ProjectGallery({ onSelect, active }) {
   return (
-    <div className="gallery-page">
+    <div className={`gallery-page ${active ? 'gallery-active' : ''}`}>
       <div className="gallery-grid">
         {projectData.map((proj, i) => (
           <GalleryItem key={proj.id} proj={proj} onSelect={() => onSelect(i)} />
@@ -258,6 +258,9 @@ function MainApp() {
     setTitleVisible(true)
   }
 
+  // 2D-Galerie aktiv: Projekte-Ansicht + 2D gewählt
+  const galleryActive = page === 'home' && projectsView === '2d'
+
   return (
     <>
       {/* Hintergrund-Overlay für Detail/About */}
@@ -280,16 +283,20 @@ function MainApp() {
           <div className="loader">tremoniacs</div>
         </div>
       }>
-        <App
-          page={page === 'about' ? 'detail' : page}
-          onObjectHover={setObjectHovered}
-          onReadMore={handleReadMore}
-          onBack={handleBack}
-        />
+        {/* 3D-Layer — wird im 2D-Modus nach oben aus dem Bild geschoben */}
+        <div className={`scene-3d ${galleryActive ? 'scene-3d-hidden' : ''}`}>
+          <App
+            page={page === 'about' ? 'detail' : page}
+            onObjectHover={setObjectHovered}
+            onReadMore={handleReadMore}
+            onBack={handleBack}
+            galleryActive={galleryActive}
+          />
+        </div>
       </Suspense>
 
       {/* Hintergrund-Titel */}
-      <div className={`main-background-title ${titleVisible ? 'title-visible' : 'title-hidden'} ${objectHovered && page === 'home' ? 'title-outline' : ''}`}>
+      <div className={`main-background-title ${titleVisible && !galleryActive ? 'title-visible' : 'title-hidden'} ${objectHovered && page === 'home' ? 'title-outline' : ''}`}>
         <h1>
           TREMO
           <br />
@@ -300,9 +307,10 @@ function MainApp() {
       {/* 3D/2D-Switch — nur in der Projekte-Ansicht */}
       {page === 'home' && <ViewSwitch view={projectsView} setView={setProjectsView} />}
 
-      {/* 2D-Bildergalerie — überlagert das Canvas in der Projekte-Ansicht */}
-      {page === 'home' && projectsView === '2d' && (
-        <ProjectGallery onSelect={handleReadMore} />
+      {/* 2D-Bildergalerie — bleibt in der Projekte-Ansicht gemountet und
+          wird per Klasse von unten ein-/ausgeschoben (synchron zum 3D-Layer) */}
+      {page === 'home' && (
+        <ProjectGallery active={projectsView === '2d'} onSelect={handleReadMore} />
       )}
 
       {/* Seiten */}

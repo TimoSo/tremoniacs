@@ -7,7 +7,7 @@ import projectData from './projectData'
 
 export { projectData }
 
-export default function App({ page, onObjectHover, onReadMore, onBack }) {
+export default function App({ page, onObjectHover, onReadMore, onBack, galleryActive }) {
   const controlsRef = useRef()
   const [isZoomedIn, setIsZoomedIn] = useState(false)
   const [activeAnnotation, setActiveAnnotation] = useState(null)
@@ -69,7 +69,9 @@ export default function App({ page, onObjectHover, onReadMore, onBack }) {
   // Wir nutzen einen eigenen Wheel-Handler statt CameraControls' dollySpeed,
   // damit wir Min/Max sauber clampen können ohne fitToBox zu blocken.
   useEffect(() => {
-    if (page !== 'home') return
+    // In der 2D-Galerie keinen Wheel-Zoom abfangen — sonst lässt sich die
+    // Galerie nicht scrollen.
+    if (page !== 'home' || galleryActive) return
     const baseDistance = Math.hypot(0, 2 - 0.5, 14) // initial setLookAt → ~14.08
     const minD = baseDistance * 0.85
     const maxD = baseDistance * 1.15
@@ -87,7 +89,7 @@ export default function App({ page, onObjectHover, onReadMore, onBack }) {
 
     window.addEventListener('wheel', onWheel, { passive: false })
     return () => window.removeEventListener('wheel', onWheel)
-  }, [page, isZoomedIn])
+  }, [page, isZoomedIn, galleryActive])
 
   const handleReadMoreClick = () => {
     if (activeAnnotation !== null && onReadMore) {
