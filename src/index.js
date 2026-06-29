@@ -93,6 +93,19 @@ function AboutPage({ onBack }) {
           von Projection Mapping über Game-Installationen bis hin zu immersiven VR-Erfahrungen.
         </p>
 
+        <h3 className="static-subtitle">Kontakt</h3>
+        <p className="static-text">
+          Lust auf eine Zusammenarbeit oder einfach eine Frage? Schreib uns gerne.
+        </p>
+        <a className="contact-button" href="mailto:team@tremoniacs.xyz">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="m3 7 9 6 9-6" />
+          </svg>
+          team@tremoniacs.xyz
+        </a>
+
         <h3 className="static-subtitle">Impressum</h3>
         <address className="impressum">
           Timo Sodenkamp<br />
@@ -215,13 +228,29 @@ function ViewSwitch({ view, setView }) {
       <div className={`view-switch-thumb ${view === '2d' ? 'thumb-2d' : 'thumb-3d'}`} />
       <button
         className={`view-switch-btn ${view === '3d' ? 'active' : ''}`}
-        onClick={() => setView('3d')}>
-        3D
+        onClick={() => setView('3d')}
+        aria-label="3D-Ansicht"
+        title="3D-Ansicht">
+        {/* Rotationspfeil um einen Punkt */}
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M20 12a8 8 0 1 1-2.34-5.66" />
+          <polyline points="20 4 20 10 14 10" />
+          <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+        </svg>
       </button>
       <button
         className={`view-switch-btn ${view === '2d' ? 'active' : ''}`}
-        onClick={() => setView('2d')}>
-        2D
+        onClick={() => setView('2d')}
+        aria-label="2D-Galerie"
+        title="2D-Galerie">
+        {/* 4 Kacheln */}
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <rect x="3" y="3" width="7.5" height="7.5" rx="1.2" />
+          <rect x="13.5" y="3" width="7.5" height="7.5" rx="1.2" />
+          <rect x="3" y="13.5" width="7.5" height="7.5" rx="1.2" />
+          <rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.2" />
+        </svg>
       </button>
     </div>
   )

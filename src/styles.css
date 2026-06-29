@@ -648,6 +648,33 @@ canvas {
   opacity: 0.7;
 }
 
+/* Kontakt-Button */
+.contact-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-top: 0.4em;
+  padding: 0.85em 1.4em;
+  border-radius: 999px;
+  background: var(--clr-accent);
+  color: var(--clr-bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact-button svg {
+  display: block;
+}
+
+.contact-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(214, 251, 29, 0.25);
+}
+
 /* About-Bild */
 .about-image {
   margin: 0 0 2.5em;
@@ -788,17 +815,20 @@ canvas {
   position: relative;
   z-index: 1;
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   appearance: none;
   border: none;
   background: transparent;
   cursor: pointer;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.75em;
-  letter-spacing: 0.1em;
-  padding: 1em 0;
+  padding: 0.9em 0;
   color: var(--clr-text-muted);
   transition: color 0.3s ease;
+}
+
+.view-switch-btn svg {
+  display: block;
 }
 
 .view-switch-btn.active {
