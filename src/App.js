@@ -7,7 +7,7 @@ import projectData from './projectData'
 
 export { projectData }
 
-export default function App({ page, onObjectHover, onReadMore, onBack, galleryActive }) {
+export default function App({ page, onObjectHover, onReadMore, onBack, galleryActive, activeTag }) {
   const controlsRef = useRef()
   const [isZoomedIn, setIsZoomedIn] = useState(false)
   const [activeAnnotation, setActiveAnnotation] = useState(null)
@@ -126,6 +126,7 @@ export default function App({ page, onObjectHover, onReadMore, onBack, galleryAc
           setInfoOverlay={setInfoOverlay}
           onObjectHover={onObjectHover}
           onBack={onBack}
+          activeTag={activeTag}
           position={[0, 0, 0]}
         />
 
@@ -223,7 +224,7 @@ function FloatingParticles({ count }) {
 /* Könnt ihr durch ein eigenes .glb ersetzen */
 /* ========================================= */
 
-function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setActiveAnnotation, setInfoOverlay, onObjectHover, onBack, ...props }) {
+function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setActiveAnnotation, setInfoOverlay, onObjectHover, onBack, activeTag, ...props }) {
   const group = useRef()
   const light = useRef()
   const spinRef = useRef()
@@ -395,22 +396,27 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
         ))}
 
         {/* Annotations — wenn eine aktiv ist, fade alle anderen aus,
-            damit sie sich nicht mit der Info-Box überlappen */}
+            damit sie sich nicht mit der Info-Box überlappen.
+            Tag-Filter blendet nicht passende Projekte aus. */}
         {showAnnotations &&
           page === 'home' &&
-          projectData.map((proj, i) => (
-            <Annotation
-              key={proj.id}
-              position={proj.position}
-              name={proj.name}
-              isActive={activeAnnotation === i}
-              isVisible={
-                annotationVisibility[i] &&
-                (activeAnnotation === null || activeAnnotation === i)
-              }
-              onClick={() => handleAnnotationClick(i)}
-            />
-          ))}
+          projectData.map((proj, i) => {
+            const matchesTag = !activeTag || (proj.tags && proj.tags.includes(activeTag))
+            return (
+              <Annotation
+                key={proj.id}
+                position={proj.position}
+                name={proj.name}
+                isActive={activeAnnotation === i}
+                isVisible={
+                  matchesTag &&
+                  annotationVisibility[i] &&
+                  (activeAnnotation === null || activeAnnotation === i)
+                }
+                onClick={() => handleAnnotationClick(i)}
+              />
+            )
+          })}
       </group>
 
       <spotLight

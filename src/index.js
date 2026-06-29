@@ -190,13 +190,16 @@ function GalleryItem({ proj, onSelect }) {
   )
 }
 
-function ProjectGallery({ onSelect, active }) {
+function ProjectGallery({ onSelect, active, activeTag }) {
   return (
     <div className={`gallery-page ${active ? 'gallery-active' : ''}`}>
       <div className="gallery-grid">
-        {projectData.map((proj, i) => (
-          <GalleryItem key={proj.id} proj={proj} onSelect={() => onSelect(i)} />
-        ))}
+        {projectData
+          .map((proj, i) => ({ proj, i })) // Original-Index merken
+          .filter(({ proj }) => !activeTag || (proj.tags && proj.tags.includes(activeTag)))
+          .map(({ proj, i }) => (
+            <GalleryItem key={proj.id} proj={proj} onSelect={() => onSelect(i)} />
+          ))}
       </div>
     </div>
   )
@@ -225,6 +228,33 @@ function ViewSwitch({ view, setView }) {
 }
 
 /* ========================================= */
+/* Tag-Filter (immer nur ein Tag aktiv)      */
+/* ========================================= */
+
+const FILTER_TAGS = [
+  { id: 'mapping', label: 'Mapping' },
+  { id: 'musikvideo', label: 'Musikvideo' },
+  { id: 'game', label: 'Game' },
+  { id: 'installation', label: 'Installation' },
+]
+
+function TagFilter({ active, setActive }) {
+  return (
+    <div className="tag-filter" role="group" aria-label="Projekte filtern">
+      {FILTER_TAGS.map((t) => (
+        <button
+          key={t.id}
+          className={`tag-filter-btn ${active === t.id ? 'active' : ''}`}
+          // erneuter Klick auf den aktiven Tag hebt die Filterung auf
+          onClick={() => setActive(active === t.id ? null : t.id)}>
+          {t.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+/* ========================================= */
 /* Main App                                  */
 /* ========================================= */
 
@@ -235,6 +265,7 @@ function MainApp() {
   const [detailIndex, setDetailIndex] = useState(null)
   const [detailExiting, setDetailExiting] = useState(false)
   const [projectsView, setProjectsView] = useState('3d') // '3d' = Canvas, '2d' = Bildergalerie
+  const [activeTag, setActiveTag] = useState(null) // null = alle Projekte
 
   const handleReadMore = (projectIndex) => {
     setTitleVisible(false)
@@ -291,6 +322,7 @@ function MainApp() {
             onReadMore={handleReadMore}
             onBack={handleBack}
             galleryActive={galleryActive}
+            activeTag={activeTag}
           />
         </div>
       </Suspense>
@@ -307,10 +339,13 @@ function MainApp() {
       {/* 3D/2D-Switch — nur in der Projekte-Ansicht */}
       {page === 'home' && <ViewSwitch view={projectsView} setView={setProjectsView} />}
 
+      {/* Tag-Filter — über der Szene, filtert 3D-Annotations und 2D-Galerie */}
+      {page === 'home' && <TagFilter active={activeTag} setActive={setActiveTag} />}
+
       {/* 2D-Bildergalerie — bleibt in der Projekte-Ansicht gemountet und
           wird per Klasse von unten ein-/ausgeschoben (synchron zum 3D-Layer) */}
       {page === 'home' && (
-        <ProjectGallery active={projectsView === '2d'} onSelect={handleReadMore} />
+        <ProjectGallery active={projectsView === '2d'} activeTag={activeTag} onSelect={handleReadMore} />
       )}
 
       {/* Seiten */}
