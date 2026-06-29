@@ -272,17 +272,54 @@ const FILTER_TAGS = [
 ]
 
 function TagFilter({ active, setActive }) {
+  const btnRefs = useRef([])
+  const [hovered, setHovered] = useState(null)
+  const [thumb, setThumb] = useState({ left: 0, width: 0, visible: false })
+
+  const activeIndex = FILTER_TAGS.findIndex((t) => t.id === active)
+  // Zielposition: beim Hovern der Maus folgen, sonst auf dem aktiven Tag ruhen
+  const target = hovered != null ? hovered : activeIndex
+  // dunkle Variante nur beim Hovern eines noch nicht aktiven Tags
+  const dark = hovered != null && hovered !== activeIndex
+
+  useEffect(() => {
+    const update = () => {
+      const el = target >= 0 ? btnRefs.current[target] : null
+      if (el) {
+        setThumb({ left: el.offsetLeft, width: el.offsetWidth, visible: true })
+      } else {
+        setThumb((t) => ({ ...t, visible: false }))
+      }
+    }
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [target])
+
   return (
-    <div className="tag-filter" role="group" aria-label="Projekte filtern">
-      {FILTER_TAGS.map((t) => (
-        <button
-          key={t.id}
-          className={`tag-filter-btn ${active === t.id ? 'active' : ''}`}
-          // erneuter Klick auf den aktiven Tag hebt die Filterung auf
-          onClick={() => setActive(active === t.id ? null : t.id)}>
-          {t.label}
-        </button>
-      ))}
+    <div
+      className="tag-filter"
+      role="group"
+      aria-label="Projekte filtern"
+      onMouseLeave={() => setHovered(null)}>
+      <div
+        className={`tag-filter-thumb ${thumb.visible ? 'visible' : ''} ${dark ? 'dark' : ''}`}
+        style={{ transform: `translateX(${thumb.left}px)`, width: `${thumb.width}px` }}
+      />
+      {FILTER_TAGS.map((t, i) => {
+        const onThumb = thumb.visible && target === i
+        return (
+          <button
+            key={t.id}
+            ref={(el) => (btnRefs.current[i] = el)}
+            className={`tag-filter-btn ${onThumb ? (dark ? 'on-dark' : 'on-bright') : ''}`}
+            onMouseEnter={() => setHovered(i)}
+            // erneuter Klick auf den aktiven Tag hebt die Filterung auf
+            onClick={() => setActive(active === t.id ? null : t.id)}>
+            {t.label}
+          </button>
+        )
+      })}
     </div>
   )
 }

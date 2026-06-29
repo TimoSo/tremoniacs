@@ -908,6 +908,8 @@ canvas {
 }
 
 .tag-filter-btn {
+  position: relative;
+  z-index: 1;
   appearance: none;
   cursor: pointer;
   font-family: var(--font-display);
@@ -920,7 +922,7 @@ canvas {
   background: transparent;
   color: var(--clr-text-muted);
   white-space: nowrap;
-  transition: color 0.3s ease, background 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 /* Trennlinien zwischen den Segmenten */
@@ -928,13 +930,38 @@ canvas {
   border-left: 1px solid rgba(214, 251, 29, 0.2);
 }
 
-.tag-filter-btn:hover {
+/* Textfarbe, je nachdem ob der helle oder dunkle Balken unter dem Tag liegt */
+.tag-filter-btn.on-bright {
+  color: var(--clr-bg);
+}
+
+.tag-filter-btn.on-dark {
   color: var(--clr-text);
 }
 
-.tag-filter-btn.active {
+/* gleitender Highlight-Balken */
+.tag-filter-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 999px;
   background: var(--clr-accent);
-  color: var(--clr-bg);
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s ease, opacity 0.25s ease;
+}
+
+.tag-filter-thumb.visible {
+  opacity: 1;
+}
+
+/* gedimmte Variante beim Hovern (dunkle Version der Highlight-Farbe) */
+.tag-filter-thumb.dark {
+  background: #5c6e10;
 }
 
 /* ===================== */
