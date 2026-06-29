@@ -19,7 +19,7 @@ Eindrücke der Installation: instagram.com/uzwei.imdortmunderu/p/DB_Gkf5C63p
 
 Mitwirkende: Timo Sodenkamp`,
     youtubeId: null,
-    thumbnail: null,
+    thumbnail: '/Hildemaus_Vorschau_e01.jpg',
     year: '2025',
   },
   {

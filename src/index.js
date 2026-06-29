@@ -145,7 +145,7 @@ function Header({ setPage, currentPage }) {
         <a href="https://www.instagram.com/tremoniacs.fbx/" target="_blank" rel="noopener noreferrer">
           Instagram <span className="nav-external-arrow">↗</span>
         </a>
-        <a href="https://www.youtube.com/@andieundroy" target="_blank" rel="noopener noreferrer">
+        <a href="https://www.youtube.com/@tremoniacs" target="_blank" rel="noopener noreferrer">
           YouTube <span className="nav-external-arrow">↗</span>
         </a>
       </nav>
@@ -231,12 +231,16 @@ function ViewSwitch({ view, setView }) {
         onClick={() => setView('3d')}
         aria-label="3D-Ansicht"
         title="3D-Ansicht">
-        {/* Rotationspfeil um einen Punkt */}
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-          strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <path d="M20 12a8 8 0 1 1-2.34-5.66" />
-          <polyline points="20 4 20 10 14 10" />
-          <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+        {/* Perspektivische Orbit-Bahn um einen Punkt — dynamisch gekippt */}
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+          strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <g transform="rotate(-22 12 12)">
+            <g transform="translate(12 12) scale(1 0.52) translate(-12 -12)">
+              <path d="M19.6 12a7.6 7.6 0 1 1-2.3-5.5" vectorEffect="non-scaling-stroke" />
+              <polyline points="19.6 4.2 19.6 9.8 14 9.8" vectorEffect="non-scaling-stroke" />
+            </g>
+          </g>
+          <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none" />
         </svg>
       </button>
       <button
@@ -284,6 +288,41 @@ function TagFilter({ active, setActive }) {
 }
 
 /* ========================================= */
+/* Hintergrund-Vorschaubild bei aktiver      */
+/* Annotation (hinter der 3D-Szene, vor der  */
+/* Background-Typo)                          */
+/* ========================================= */
+
+function AnnotationPreview({ index }) {
+  const proj = index != null ? projectData[index] : null
+  const src = proj
+    ? proj.thumbnail
+      ? proj.thumbnail
+      : proj.youtubeId
+      ? youtubePreview(proj.youtubeId, 'maxresdefault')
+      : null
+    : null
+
+  // letztes Bild beim Ausblenden behalten, damit es sauber wegfaden kann
+  const [shown, setShown] = useState(null)
+  useEffect(() => {
+    if (src) setShown(src)
+  }, [src])
+
+  const handleError = () => {
+    if (proj && proj.youtubeId && shown && shown.includes('maxresdefault')) {
+      setShown(youtubePreview(proj.youtubeId, 'hqdefault'))
+    }
+  }
+
+  return (
+    <div className={`annotation-preview ${src ? 'visible' : ''}`}>
+      {shown && <img src={shown} alt="" onError={handleError} />}
+    </div>
+  )
+}
+
+/* ========================================= */
 /* Main App                                  */
 /* ========================================= */
 
@@ -295,6 +334,7 @@ function MainApp() {
   const [detailExiting, setDetailExiting] = useState(false)
   const [projectsView, setProjectsView] = useState('3d') // '3d' = Canvas, '2d' = Bildergalerie
   const [activeTag, setActiveTag] = useState(null) // null = alle Projekte
+  const [previewIndex, setPreviewIndex] = useState(null) // aktive Annotation → Hintergrundbild
 
   const handleReadMore = (projectIndex) => {
     setTitleVisible(false)
@@ -384,6 +424,9 @@ function MainApp() {
       {/* Hintergrund-Overlay für Detail/About */}
       <div className={`bg-overlay ${page === 'detail' || page === 'about' || detailExiting ? 'bg-overlay-active' : ''}`} />
 
+      {/* Vorschaubild der aktiven Annotation — hinter der 3D-Szene, vor der Typo */}
+      {page === 'home' && !galleryActive && <AnnotationPreview index={previewIndex} />}
+
       <Header setPage={(p) => {
         if (p === 'home') {
           setPage('home')
@@ -410,6 +453,7 @@ function MainApp() {
             onBack={handleBack}
             galleryActive={galleryActive}
             activeTag={activeTag}
+            onAnnotationSelect={setPreviewIndex}
           />
         </div>
       </Suspense>

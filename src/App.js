@@ -7,7 +7,7 @@ import projectData from './projectData'
 
 export { projectData }
 
-export default function App({ page, onObjectHover, onReadMore, onBack, galleryActive, activeTag }) {
+export default function App({ page, onObjectHover, onReadMore, onBack, galleryActive, activeTag, onAnnotationSelect }) {
   const controlsRef = useRef()
   const [isZoomedIn, setIsZoomedIn] = useState(false)
   const [activeAnnotation, setActiveAnnotation] = useState(null)
@@ -64,6 +64,11 @@ export default function App({ page, onObjectHover, onReadMore, onBack, galleryAc
     window.addEventListener('contextmenu', handleContextMenu)
     return () => window.removeEventListener('contextmenu', handleContextMenu)
   }, [page, handleReset, onBack])
+
+  // aktiven Annotation-Index nach oben melden (für das Hintergrund-Vorschaubild)
+  useEffect(() => {
+    if (onAnnotationSelect) onAnnotationSelect(activeAnnotation)
+  }, [activeAnnotation, onAnnotationSelect])
 
   const handleReadMoreClick = () => {
     if (activeAnnotation !== null && onReadMore) {
