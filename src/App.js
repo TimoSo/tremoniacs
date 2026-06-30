@@ -391,6 +391,7 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
                 position={proj.position}
                 name={proj.name}
                 isActive={activeAnnotation === i}
+                isNew={proj.isNew}
                 isVisible={
                   matchesTag &&
                   annotationVisibility[i] &&
@@ -422,7 +423,7 @@ function CentralObject({ page, handleZoomTo, isZoomedIn, activeAnnotation, setAc
 
 useGLTF.preload('/tremoniacs_Logo_e01.glb')
 
-function Annotation({ name, isActive, isVisible, onClick, ...props }) {
+function Annotation({ name, isActive, isVisible, isNew, onClick, ...props }) {
   const handleClick = (e) => {
     e.stopPropagation()
     if (onClick) onClick()
@@ -444,6 +445,7 @@ function Annotation({ name, isActive, isVisible, onClick, ...props }) {
           onPointerDown={(e) => e.stopPropagation()}
           onClick={handleClick}>
           {name}
+          {isNew && <span className="annotation-new-badge">NEU</span>}
         </div>
       </div>
     </Html>

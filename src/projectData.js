@@ -6,6 +6,7 @@ const projectData = [
   {
     id: 'hildemaus',
     tags: ['game', 'installation'],
+    isNew: true,
     name: 'Hildemaus',
     position: [0.5, 2.5, -1.2],
     shortInfo: 'Peppers-Ghost-Installation auf Basis eines 100 Jahre alten Poesiebuchs.',
@@ -50,6 +51,7 @@ Mitwirkende: Laurin Bürmann, Timo Sodenkamp`,
   {
     id: 'mapping-visuals',
     tags: ['mapping'],
+    isNew: true,
     name: 'Mapping Live Performance',
     position: [3.0, -0.8, -0.5],
     shortInfo: 'Interaktive Live Performance mit Motion Capture beim Fassadenmapping am Dortmunder U.',
@@ -290,6 +292,7 @@ Mitwirkende: Timo Sodenkamp, Laurin Bürmann`,
   {
     id: 'heilig-x-mapping',
     tags: ['mapping'],
+    isNew: true,
     name: 'Heilig X Mapping',
     position: [-1.5, -1.3, -0.5],
     shortInfo: 'Projection Mapping — Text folgt.',

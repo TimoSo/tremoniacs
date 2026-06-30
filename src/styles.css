@@ -231,6 +231,7 @@ canvas {
 }
 
 .annotation {
+  position: relative;
   transition: all 0.4s ease-in-out;
   border: 1px solid rgba(214, 251, 29, 0.4);
   cursor: pointer;
@@ -249,6 +250,22 @@ canvas {
   justify-content: center;
   align-items: center;
   white-space: nowrap;
+}
+
+/* "NEU"-Box oben rechts an neuen Annotations */
+.annotation-new-badge {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  background: var(--clr-accent);
+  color: var(--clr-bg);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 2px;
+  pointer-events: none;
 }
 
 .annotation:hover {

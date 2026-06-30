@@ -246,7 +246,10 @@ function ViewSwitch({ view, setView }) {
       <button
         className={`view-switch-btn ${btnClass(0)}`}
         onMouseEnter={() => setHovered(0)}
-        onClick={() => setView('3d')}
+        onClick={() => {
+          setView('3d')
+          setHovered(null)
+        }}
         aria-label="3D-Ansicht"
         title="3D-Ansicht">
         {/* 360-View: Objekt auf Drehteller mit Rotationspfeilen */}
@@ -261,7 +264,10 @@ function ViewSwitch({ view, setView }) {
       <button
         className={`view-switch-btn ${btnClass(1)}`}
         onMouseEnter={() => setHovered(1)}
-        onClick={() => setView('2d')}
+        onClick={() => {
+          setView('2d')
+          setHovered(null)
+        }}
         aria-label="2D-Galerie"
         title="2D-Galerie">
         {/* 4 Kacheln */}
@@ -330,8 +336,13 @@ function TagFilter({ active, setActive }) {
             ref={(el) => (btnRefs.current[i] = el)}
             className={`tag-filter-btn ${onThumb ? (dark ? 'on-dark' : 'on-bright') : ''}`}
             onMouseEnter={() => setHovered(i)}
-            // erneuter Klick auf den aktiven Tag hebt die Filterung auf
-            onClick={() => setActive(active === t.id ? null : t.id)}>
+            // erneuter Klick auf den aktiven Tag hebt die Filterung auf;
+            // Hover zurücksetzen, damit auf Touch (kein mouseleave) der
+            // dunkle Balken nach dem Abwählen verschwindet
+            onClick={() => {
+              setActive(active === t.id ? null : t.id)
+              setHovered(null)
+            }}>
             {t.label}
           </button>
         )
