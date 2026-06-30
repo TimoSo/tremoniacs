@@ -73,7 +73,7 @@ function AboutPage({ onBack }) {
         <div className="about-members">
           <div className="member-card">
             <h3>Laurin Bürmann</h3>
-            <a href="https://www.instagram.com/laurin_12zwo" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/laurin_maloche" target="_blank" rel="noopener noreferrer">
               @laurin_maloche
             </a>
           </div>
