@@ -295,9 +295,13 @@ Mitwirkende: Timo Sodenkamp, Laurin Bürmann`,
     isNew: true,
     name: 'Heilig X Mapping',
     position: [-1.5, -1.3, -0.5],
-    shortInfo: 'Projection Mapping — Text folgt.',
-    description: 'Text folgt.',
-    youtubeId: null,
+    shortInfo: 'ExtraSicht 👀 — filmisches Manifest über die spekulative Zukunft des Ruhrgebiets.',
+    description: `ExtraSicht 👀
+
+Die spektakuläre und spekulative Zukunft des Ruhrgebiets
+
+Für das Quartier Bochumer Straße und das gesamte Ruhrgebiet gibt es kein Zurück mehr in das montanindustrielle Zeitalter – und doch ist das Erbe der Gründerjahre unser stärkster Motor. Unter dem Motto „Standing on the shoulders of giants" knüpft dieser Film an den Wagemut der historischen Gründerpersönlichkeiten an. Wir lassen uns von der Entschlossenheit eines Friedrich Grillo, August Thyssen und Hugo Stinnes inspirieren, um eine Transformation zu entwerfen, die das Revier heute zukunftsfit macht. Zur Extraschicht wagen wir eine Extra-Sicht 👀 und setzen zum großen künstlerischen Sprung an. Wir spekulieren über eine Zukunft, in der das Ruhrgebiet in 100 oder 500 Jahren als utopisches Kraftzentrum neu erstrahlt. Wie sähe eine Welt aus, die den Geist der alten Gründer mit den technologischen und ökologischen Möglichkeiten von morgen verschmilzt? Es entsteht ein filmisches Manifest für eine Region, die sich gerade zum zweiten Mal neu erfindet – spektakulär, spekulativ und zutiefst mutig.`,
+    youtubeId: '18EbBo2zrgc',
     thumbnail: '/HKK_Vorschau_e05_1.jpg',
     year: '2025',
   },
