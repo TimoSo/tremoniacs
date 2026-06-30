@@ -223,28 +223,44 @@ function ProjectGallery({ onSelect, active, activeTag }) {
 /* ========================================= */
 
 function ViewSwitch({ view, setView }) {
+  const views = ['3d', '2d']
+  const [hovered, setHovered] = useState(null)
+  const activeIndex = views.indexOf(view)
+  // Zielposition: beim Hovern der Maus folgen, sonst auf der aktiven Ansicht ruhen
+  const target = hovered != null ? hovered : activeIndex
+  // dunkle Variante nur beim Hovern der nicht-aktiven Ansicht
+  const dark = hovered != null && hovered !== activeIndex
+
+  const btnClass = (i) =>
+    target === i ? (dark ? 'on-dark' : 'on-bright') : ''
+
   return (
-    <div className="view-switch" role="group" aria-label="Ansicht wechseln">
-      <div className={`view-switch-thumb ${view === '2d' ? 'thumb-2d' : 'thumb-3d'}`} />
+    <div
+      className="view-switch"
+      role="group"
+      aria-label="Ansicht wechseln"
+      onMouseLeave={() => setHovered(null)}>
+      <div
+        className={`view-switch-thumb ${target === 1 ? 'thumb-2d' : 'thumb-3d'} ${dark ? 'dark' : ''}`}
+      />
       <button
-        className={`view-switch-btn ${view === '3d' ? 'active' : ''}`}
+        className={`view-switch-btn ${btnClass(0)}`}
+        onMouseEnter={() => setHovered(0)}
         onClick={() => setView('3d')}
         aria-label="3D-Ansicht"
         title="3D-Ansicht">
-        {/* Perspektivische Orbit-Bahn um einen Punkt — dynamisch gekippt */}
+        {/* 360-View: Objekt auf Drehteller mit Rotationspfeilen */}
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
-          strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <g transform="rotate(-22 12 12)">
-            <g transform="translate(12 12) scale(1 0.52) translate(-12 -12)">
-              <path d="M19.6 12a7.6 7.6 0 1 1-2.3-5.5" vectorEffect="non-scaling-stroke" />
-              <polyline points="19.6 4.2 19.6 9.8 14 9.8" vectorEffect="non-scaling-stroke" />
-            </g>
-          </g>
-          <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none" />
+          strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <ellipse cx="12" cy="16" rx="9.5" ry="3.6" />
+          <rect x="8.5" y="7.5" width="7" height="7" rx="1" />
+          <polyline points="4.8 13.9 2.5 16 4.8 18.1" />
+          <polyline points="19.2 13.9 21.5 16 19.2 18.1" />
         </svg>
       </button>
       <button
-        className={`view-switch-btn ${view === '2d' ? 'active' : ''}`}
+        className={`view-switch-btn ${btnClass(1)}`}
+        onMouseEnter={() => setHovered(1)}
         onClick={() => setView('2d')}
         aria-label="2D-Galerie"
         title="2D-Galerie">

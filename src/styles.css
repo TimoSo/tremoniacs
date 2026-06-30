@@ -841,7 +841,7 @@ canvas {
   overflow: hidden;
 }
 
-/* gleitendes gelbes Highlight */
+/* gleitendes Highlight — folgt der Maus, rastet auf der aktiven Ansicht */
 .view-switch-thumb {
   position: absolute;
   left: 0;
@@ -849,7 +849,8 @@ canvas {
   width: 100%;
   height: 50%;
   background: var(--clr-accent);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s ease;
   z-index: 0;
 }
 
@@ -859,6 +860,11 @@ canvas {
 
 .view-switch-thumb.thumb-2d {
   transform: translateY(100%);
+}
+
+/* gedimmte Variante beim Hovern (dunkle Version der Highlight-Farbe) */
+.view-switch-thumb.dark {
+  background: #5c6e10;
 }
 
 .view-switch-btn {
@@ -881,8 +887,13 @@ canvas {
   display: block;
 }
 
-.view-switch-btn.active {
+/* Icon-Farbe je nachdem ob der helle oder dunkle Balken unter dem Button liegt */
+.view-switch-btn.on-bright {
   color: var(--clr-bg);
+}
+
+.view-switch-btn.on-dark {
+  color: var(--clr-text);
 }
 
 /* ===================== */
@@ -1085,12 +1096,22 @@ canvas {
 }
 
 @media (max-width: 700px) {
+  /* Switch nach unten links statt mittig am Rand */
   .view-switch {
-    left: 0.6em;
+    left: 1em;
+    top: auto;
+    bottom: 1.2em;
+    transform: none;
     width: 2.5em;
   }
+  /* Tag-Filter dichter an den Header heran */
+  .tag-filter {
+    top: 4em;
+  }
   .gallery-grid {
-    padding: 10em 1em 4em 3.8em;
+    /* Switch ist jetzt unten → kein großes linkes Padding mehr nötig,
+       oben Platz für den höher gerückten Filter, unten für den Switch */
+    padding: 7.5em 1em 7em 1em;
     gap: 1em;
   }
   .tag-filter-btn {
