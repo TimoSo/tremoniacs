@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@200;300;400;500;600&display=swap');
+/* Fonts werden in public/index.html per <link> geladen (kein @import hier —
+   das würde die gleichen Fonts ein zweites Mal und render-blockierend laden) */
 
 /* ===================== */
 /* RESET & BASE          */

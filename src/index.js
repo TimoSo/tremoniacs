@@ -166,18 +166,20 @@ function youtubePreview(id, quality) {
 }
 
 function GalleryItem({ proj, onSelect }) {
+  // sddefault (640px) reicht für die Grid-Kacheln und ist deutlich kleiner
+  // als maxresdefault — schneller auf Mobilgeräten mit schlechtem Empfang
   const initial = proj.thumbnail
     ? proj.thumbnail
     : proj.youtubeId
-    ? youtubePreview(proj.youtubeId, 'maxresdefault')
+    ? youtubePreview(proj.youtubeId, 'sddefault')
     : null
 
   const [src, setSrc] = useState(initial)
   const [failed, setFailed] = useState(initial === null)
 
   const handleError = () => {
-    // maxresdefault existiert nicht für jedes Video → auf hqdefault zurückfallen
-    if (proj.youtubeId && src && src.includes('maxresdefault')) {
+    // sddefault existiert nicht für jedes Video → auf hqdefault zurückfallen
+    if (proj.youtubeId && src && src.includes('sddefault')) {
       setSrc(youtubePreview(proj.youtubeId, 'hqdefault'))
     } else {
       setFailed(true)
